@@ -102,7 +102,8 @@ impl Build {
             // Nothing related to zlib please
             .arg("no-comp")
             .arg("no-zlib")
-            .arg("no-zlib-dynamic");
+            .arg("no-zlib-dynamic")
+            .arg("no-ui");
 
         if cfg!(not(feature = "weak-crypto")) {
             configure
@@ -353,6 +354,10 @@ impl Build {
                 configure.arg("-DOPENSSL_NO_SECURE_MEMORY");
             }
         }
+
+        configure.arg("-DOPENSSL_NO_SOCK");
+        configure.arg("-DOPENSSL_NO_DGRAM");
+        configure.arg("-DNO_SYSLOG");  // not supposed to be set externally
 
         // And finally, run the perl configure script!
         configure.current_dir(&inner_dir);
